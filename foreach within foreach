@@ -1,0 +1,93 @@
+$ads= Import-Csv C:\temp\AD.csv
+$exchs = Import-Csv C:\temp\exchange.csv
+
+
+
+foreach($ad in $ads)
+{
+foreach($exch in $exchs){
+
+if($ad.Mail -eq $exch.Mail)
+{
+
+$new = [PSCustomObject]@{FirstName = $ad.FirstName
+                         LastName = $ad.LastName
+                         Email = $ad.Mail
+                         Size = $exch.TotalSize
+                         Database = $exch.Database}
+
+$new | Export-Csv C:\temp\data.csv -Append -Force
+
+}
+}
+}
+
+
+----------------------------------------------------------------------------------
+$services = Get-Service
+
+foreach($service in $services)
+{
+
+if($service.Status -eq 'Running')
+{
+
+$serviceOut = [PSCustomObject]@{name = $service.Name
+                            DisplayName = $service.DisplayName} 
+
+$serviceOut | Export-Csv C:\temp\services1.csv -Append -Force
+
+}
+
+}
+
+-----------------------------------------------------------------------------------------------
+
+$update = Get-Content C:\Windows\Logs\CBS\CBS.log
+
+foreach($line in $update)
+{
+
+if ($line -match 'v[a-z]{6}\s\d\.\d\.\d{5}.\d{4}')
+{
+
+$Matches[0] | Out-File C:\temp\version.txt -Append
+}
+
+}
+
+
+
+Get-Help about_Regular_Expressions -ShowWindow
+
+
+"dinesh" -match "din*"
+
+"eshdin" -match "din"
+
+"dinesh" -match '^din'
+
+"ab" -match '^[abc]$'
+"ab" -match '^[abc]'
+"AB" -cmatch '^[a-z]'
+"AB" -match '^[a-z]'
+
+"ab1" -match '^ab[0-9]$'
+"12abc" -match '^[0-9][0-9][a-z][a-z][a-z]$'
+"1214-4569" -match '^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+"1214-4569-5758-6393" -match '^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$'
+"1214-4569-5758-6393" -match '^([0-9]{4}-){3}[0-9]{4}$'
+"1214-4569-5758-6393" -match '^(\d{4}-){3}\d{4}$'
+
+\d = any digit
+\w = any digit and char
+\D = anything not digit
+\W = anything not digit and char
+\s = space
+\S = non space
+
+Get-Help about_Regular_Expressions
+
+
+"dieshn" -match "din*"
+"abcbb" -match "cbc+"
